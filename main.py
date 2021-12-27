@@ -1,7 +1,7 @@
 import random as r
 import time as t
 
-def result(rightcount,wrongcount,correctAnswer,yourAnswer):    
+def result(rightcount,wrongcount,correctAnswer,yourAnswer):  #it will simply print the result of your currect practiced game mode 
     print("\nResult = ",rightcount,"/",10)
     print(rightcount,"answers are right and ",wrongcount,"answers are wrong")
     print("Correct answer = ",correctAnswer,end="\n")
@@ -13,9 +13,9 @@ def result(rightcount,wrongcount,correctAnswer,yourAnswer):
     else:
         print("Poor performence...! You need to practice alot\nKeep practicing")
 
-def getNum(op,level):
+def getNum(op,level): # it will return random numbers by giving the level and operator for the miscllaneous(mix function)
     if op == '+':
-        return addMix(level)
+        return addMix(level) 
     elif op == '-':
         return subMix(level)
     elif op == '*':
@@ -25,19 +25,19 @@ def getNum(op,level):
     else:
         print("unexpected error...!") 
 
-def add(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
+def add(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): #in this function loop wil run for 10 times to ask question(add) and get answer from the user
     if level <= 4:
         for k in range(10):
             print("Q",k+1,sep="",end=") ")
             a,b = addMix(level)           
             q, answer, rightcount, wrongcount = adding(a,b,rightcount,wrongcount)
-            yourAnswer[q] = answer
-            correctAnswer[q] = answer
+            yourAnswer[q] = answer      #recording the correct answer
+            correctAnswer[q] = answer   #recording the user's answer
         result(rightcount,wrongcount,correctAnswer,yourAnswer)
     else:
         print("choose correct option")
 
-def addMix(level):
+def addMix(level): #it will retrun 2 random numbers for addition by giving its level 
     if level == 1:
         a = r.randrange(20)
         b = r.randrange(15)
@@ -52,7 +52,7 @@ def addMix(level):
         b = r.randrange(30,60)
     return a,b
 
-def adding(a,b,rightcount,wrongcount):
+def adding(a,b,rightcount,wrongcount): # it will add 2 numbers, count correct and wrond answers given by user and return the values as follows
     q = str(a)+" + "+str(b)+" = "
     c = a+b
     print(a,"+",b,"=",end="")
@@ -63,19 +63,19 @@ def adding(a,b,rightcount,wrongcount):
         wrongcount+=1
     return q,c,rightcount,wrongcount
 
-def sub(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
+def sub(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): #in this function loop wil run for 10 times to ask question(minus) and get answer from the user
     if level <= 4:
         for k in range(10):
             print("Q",k+1,sep="",end=") ")
             a,b = subMix(level)
             q, answer, rightcount, wrongcount = subtracting(a,b,rightcount,wrongcount)
-            correctAnswer[q] = answer
-            yourAnswer[q] = answer
+            correctAnswer[q] = answer  #recording the correct answer
+            yourAnswer[q] = answer     #recording the user's answer
         result(rightcount,wrongcount,correctAnswer,yourAnswer)
     else:
         print("choose correct option")
 
-def subMix(level):
+def subMix(level): #it will retrun 2 random numbers for subtraction by giving its level.
     if level == 1:
         a = r.randrange(25)
         b = r.randrange(15)
@@ -92,7 +92,7 @@ def subMix(level):
         a, b = b, a
     return a,b
 
-def subtracting(a,b,rightcount,wrongcount):
+def subtracting(a,b,rightcount,wrongcount): # it will subtract 2 numbers, count correct and wrond answers given by user and return the values as follows.
     q = str(a)+" - "+str(b)+" = "
     c = a-b
     print(a,"-",b,"=",end="")
@@ -103,7 +103,7 @@ def subtracting(a,b,rightcount,wrongcount):
         wrongcount+=1
     return q,c,rightcount,wrongcount
 
-def mul(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
+def mul(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): #in this function loop wil run for 10 times to ask question(multiply) and get answer from the user
     if level <= 4: 
         for k in range(10):
             print("Q",k+1,sep="",end=") ")
@@ -115,7 +115,7 @@ def mul(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {
     else:
         print("choose correct option")
 
-def mulMix(level):
+def mulMix(level): #it will retrun 2 random numbers for multiplication by giving its level.
     if level == 1:
         a = r.randrange(15)
         b = r.randrange(11)
@@ -130,7 +130,7 @@ def mulMix(level):
         b = r.randrange(10,21)
     return a,b
 
-def multipling(a,b,rightcount,wrongcount):
+def multipling(a,b,rightcount,wrongcount): # it will multiply 2 numbers, count correct and wrond answers given by user and return the values as follows.
     q = str(a)+" * "+str(b)+" = "
     c = a*b
     print(a,"*",b,"=",end="")
@@ -141,7 +141,8 @@ def multipling(a,b,rightcount,wrongcount):
         wrongcount+=1
     return q,c,rightcount,wrongcount
 
-def div(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
+def div(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): #in this function loop wil run for 10 times to ask question(divide) and get answer from the user
+    if level <= 4: 
     if level <= 4:
         for k in range(10):
             a,b = divMix(level)
@@ -152,7 +153,7 @@ def div(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {
     else:
         print("choose correct option")
 
-def divMix(level):
+def divMix(level): #it will retrun 2 random numbers for division by giving its level.
     if level == 1:
         b = r.randrange(11)
         a = b*r.randrange(1,11)
@@ -171,7 +172,7 @@ def divMix(level):
         a = b*r.randrange(1,21)
     return a,b
 
-def dividing(a,b,rightcount,wrongcount):
+def dividing(a,b,rightcount,wrongcount): # it will divide up 2 numbers, count correct and wrond answers given by user and return the values as follows.
     q = str(a)+" / "+str(b)+" = "
     c = a/b
     print(a,"/",b,"=",end="")
@@ -182,14 +183,14 @@ def dividing(a,b,rightcount,wrongcount):
         wrongcount+=1
     return q,c,rightcount,wrongcount
 
-def table(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ):
+def table(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
     if level <= 4: 
         for k in range(10):
-            print("Q",k+1,sep="",end=") ")
-            if level == 1: #practice for table 2 to 10
-                a = r.randrange(2,11)
-                b = r.randrange(1,11)
-            elif level == 2: #practice for table 10 to 20
+            print("Q",k+1,sep="",end=") ")                            #This function will simply run for 10 times by providing the level by user
+            if level == 1: #practice for table 2 to 10                #it will genrate 2 numbers for user and display it then it will ask user to
+                a = r.randrange(2,11)                                 #input the correct answer and the answer will be matched by the correct answer
+                b = r.randrange(1,11)                                 #if answer of user will found correct right answer will increase else wrong answer
+            elif level == 2: #practice for table 10 to 20             #count will inrease.
                 a = r.randrange(10,21)
                 b = r.randrange(1,11)
             elif level == 3: #practice for table 18 to 25
