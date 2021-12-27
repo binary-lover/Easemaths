@@ -343,35 +343,41 @@ def info():
 def showinfo():
     massage = "This progrmam is made by MOZAHIDUL ISLAM \nperpos of ths program is to make your calculation faster" 
     massage+=" regarding to school project\nHope you like it...\n                        Thankyou for using\n"
-    for i in massage:
-        t.sleep(0.037)
-        print(i,end="")
+    for j in range(len(massage)):
+        for i in massage[j]:
+            print(i,end="")
+            # t.sleep(0.057)
+
 
 #************main programe
 showinfo()
 i = 1
 while i !=0:
     showoptn()
-    game = int(input("Enter here: "))
-    if game == 0:
-        break
-    level = int(input("Enter level: "))
-
-    if chkOptn(game,level) == True:
-        if game == 1:
-            add(level)
-        elif game == 2:
-            sub(level)
-        elif game == 3:
-            mul(level)
-        elif game == 4:
-            div(level)
-        elif game == 5:
-            mix(level)
-        elif game == 6:
-            table(level)
-        elif game == 7:
-            highScr(game,level)
-    else:
-        print("\nChoose correct option...")
+    try :
+        game = int(input("Enter Game: "))
+        if game == 0:
+            break
+        level = int(input("Enter level: "))
+        
+        if chkOptn(game,level) == True:
+            if game == 1:
+                add(level)
+            elif game == 2:
+                sub(level)
+            elif game == 3:
+                mul(level)
+            elif game == 4:
+                div(level)
+            elif game == 5:
+                mix(level)
+            elif game == 6:
+                table(level)
+            elif game == 7:
+                highScr(game,level)
+        else:
+            print("\nChoose correct option...")
+    except:
+        print('Only Integer')
+        
 info()   
