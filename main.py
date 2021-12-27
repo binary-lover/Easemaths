@@ -1,5 +1,6 @@
 import random as r
 import time as t
+
 def result(rightcount,wrongcount,correctAnswer,yourAnswer):    
     print("\nResult = ",rightcount,"/",10)
     print(rightcount,"answers are right and ",wrongcount,"answers are wrong")
@@ -12,182 +13,6 @@ def result(rightcount,wrongcount,correctAnswer,yourAnswer):
     else:
         print("Poor performence...! You need to practice alot\nKeep practicing")
 
-def add(level): 
-    if level <= 4:
-        rightcount = 0
-        wrongcount = 0
-        correctAnswer = {}
-        yourAnswer = {}
-        for k in range(10):
-            print("Q",k+1,sep="",end=") ")
-            if level == 1:
-                a = r.randrange(20)
-                b = r.randrange(15)
-            elif level == 2:
-                a = r.randrange(10,41)
-                b = r.randrange(5,20)
-            elif level == 3:
-                a = r.randrange(20,51)
-                b = r.randrange(20,30)
-            elif level == 4:
-                a = r.randrange(40,101,2)
-                b = r.randrange(30,60)
-            q = str(a)+" + "+str(b)+" = "
-            correctAnswer[q] = a+b
-            print(a,"+",b,"=",end="")
-            answer = int(input())
-            if answer == a+b:
-                yourAnswer[q] = answer
-                rightcount+=1
-            else:
-                yourAnswer[q] = answer
-                wrongcount+=1
-        result(rightcount,wrongcount,correctAnswer,yourAnswer)
-    else:
-        print("choose correct option")
-
-def sub(level): 
-    if level <= 4:
-        rightcount = 0
-        wrongcount = 0
-        correctAnswer = {}
-        yourAnswer = {}
-        for k in range(10):
-            print("Q",k+1,sep="",end=") ")
-            if level == 1:
-                a = r.randrange(25)
-                b = r.randrange(15)
-            elif level == 2:
-                a = r.randrange(10,36)
-                b = r.randrange(20)
-            elif level == 3:
-                a = r.randrange(20,50)
-                b = r.randrange(10,30)
-            elif level == 4:
-                a = r.randrange(40,111,2)
-                b = r.randrange(20,50)
-            if a < b:
-                a, b = b, a
-            q = str(a)+" - "+str(b)+" = "
-            correctAnswer[q] = a-b
-            print(a,"-",b,"=",end="")
-            answer = int(input())
-            if answer == a-b:
-                yourAnswer[q] = answer
-                rightcount+=1
-            else:
-                yourAnswer[q] = answer
-                wrongcount+=1
-        result(rightcount,wrongcount,correctAnswer,yourAnswer)
-    else:
-        print("choose correct option")
-
-def mul(level):
-    if level <= 4: 
-        rightcount = 0
-        wrongcount = 0
-        correctAnswer = {}
-        yourAnswer = {}
-        for k in range(10):
-            print("Q",k+1,sep="",end=") ")
-            if level == 1:
-                a = r.randrange(15)
-                b = r.randrange(11)
-            elif level == 2:
-                a = r.randrange(8,20)
-                b = r.randrange(12)
-            elif level == 3:
-                a = r.randrange(12,25)
-                b = r.randrange(1,14)
-            elif level == 4:
-                a = r.randrange(15,30)
-                b = r.randrange(10,21)
-            q = str(a)+" * "+str(b)+" = "
-            correctAnswer[q] = a*b
-            print(a,"*",b,"=",end="")
-            answer = int(input())
-            if answer == a*b:
-                yourAnswer[q] = answer
-                rightcount+=1
-            else:
-                yourAnswer[q] = answer
-                wrongcount+=1
-        result(rightcount,wrongcount,correctAnswer,yourAnswer)
-    else:
-        print("choose correct option")
-
-def div(level): 
-    if level <= 4:
-        rightcount = 0
-        wrongcount = 0
-        correctAnswer = {}
-        yourAnswer = {}
-        for k in range(10):
-            print("Q",k+1,sep="",end=") ")
-            if level == 1:
-                b = r.randrange(11)
-                a = b*r.randrange(1,11)
-                if b == 0:
-                    b = r.randrange(1,100,3)
-            elif level == 2:
-                b = r.randrange(16)
-                a = b*r.randrange(1,14)
-                if b == 0:
-                    b = r.randrange(1,111,9)
-            elif level == 3:
-                b = r.randrange(12,21)
-                a = b*r.randrange(1,17)
-            elif level == 4:
-                b = r.randrange(14,25)
-                a = b*r.randrange(1,21)
-            q = str(a)+" / "+str(b)+" = "
-            correctAnswer[q] = int(a/b)
-            print(a,"/",b,"=",end="")
-            answer = int(input())
-            if answer == a/b:
-                yourAnswer[q] = answer
-                rightcount+=1
-            else:
-                yourAnswer[q] = answer
-                wrongcount+=1
-        result(rightcount,wrongcount,correctAnswer,yourAnswer)
-    else:
-        print("choose correct option")
-
-def table(level):
-    if level <= 4: 
-        rightcount = 0
-        wrongcount = 0
-        correctAnswer = {}
-        yourAnswer = {}
-        for k in range(10):
-            print("Q",k+1,sep="",end=") ")
-            if level == 1: #practice for table 2 to 10
-                a = r.randrange(2,11)
-                b = r.randrange(1,11)
-            elif level == 2: #practice for table 10 to 20
-                a = r.randrange(10,21)
-                b = r.randrange(1,11)
-            elif level == 3: #practice for table 18 to 25
-                a = r.randrange(18,26)
-                b = r.randrange(1,11)
-            elif level == 4: #pracitce for table 2 to 25
-                a = r.randrange(2,26)
-                b = r.randrange(1,11)
-            q = str(a)+" * "+str(b)+" = "
-            correctAnswer[q] = a*b
-            print(a,"*",b,"=",end="")
-            answer = int(input())
-            if answer == a*b:
-                yourAnswer[q] = answer
-                rightcount+=1
-            else:
-                yourAnswer[q] = answer
-                wrongcount+=1
-        result(rightcount,wrongcount,correctAnswer,yourAnswer)
-    else:
-        print("choose correct option")
-
 def getNum(op,level):
     if op == '+':
         return addMix(level)
@@ -199,55 +24,18 @@ def getNum(op,level):
         return divMix(level)
     else:
         print("unexpected error...!") 
-    
-def mix(level):
-    rightcount = 0
-    wrongcount = 0
-    correctAnswer = {}
-    yourAnswer = {}
-    li = ['+',"-","*","/"]
-    for k in range(10):
-        op = li[r.randrange(4)]
-        a,b = getNum(op,level)
-        print("Q",k+1,sep="",end=") ")
-        print(a,op,b,"=",end="")
-        answer = int(input())
 
-        if op == '+':
-            q = str(a)+" + "+str(b)+" = "
-            correctAnswer[q] = a+b
-            if answer == a+b:
-                rightcount+=1
-            else:
-                wrongcount+=1
-            
-        elif op == '-':
-            q = str(a)+" - "+str(b)+" = "
-            correctAnswer[q] = a-b
-            if answer == a-b:
-                rightcount+=1
-            else:
-                yourAnswer[q] = answer
-                wrongcount+=1
-         
-        elif op == '*':
-            q = str(a)+" * "+str(b)+" = "
-            correctAnswer[q] = a*b
-            if answer == a*b:
-                rightcount+=1
-            else:
-                wrongcount+=1
-            
-        elif op == '/':
-            q = str(a)+" / "+str(b)+" = "
-            correctAnswer[q] = a/b
-            if answer == a/b:
-                rightcount+=1
-            else:
-                wrongcount+=1
-        
-        yourAnswer[q] = answer
-    result(rightcount,wrongcount,correctAnswer,yourAnswer)
+def add(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
+    if level <= 4:
+        for k in range(10):
+            print("Q",k+1,sep="",end=") ")
+            a,b = addMix(level)           
+            q, answer, rightcount, wrongcount = adding(a,b,rightcount,wrongcount)
+            yourAnswer[q] = answer
+            correctAnswer[q] = answer
+        result(rightcount,wrongcount,correctAnswer,yourAnswer)
+    else:
+        print("choose correct option")
 
 def addMix(level):
     if level == 1:
@@ -263,6 +51,29 @@ def addMix(level):
         a = r.randrange(40,101,2)
         b = r.randrange(30,60)
     return a,b
+
+def adding(a,b,rightcount,wrongcount):
+    q = str(a)+" + "+str(b)+" = "
+    c = a+b
+    print(a,"+",b,"=",end="")
+    answer = int(input())
+    if answer == c:
+        rightcount+=1
+    else:
+        wrongcount+=1
+    return q,c,rightcount,wrongcount
+
+def sub(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
+    if level <= 4:
+        for k in range(10):
+            print("Q",k+1,sep="",end=") ")
+            a,b = subMix(level)
+            q, answer, rightcount, wrongcount = subtracting(a,b,rightcount,wrongcount)
+            correctAnswer[q] = answer
+            yourAnswer[q] = answer
+        result(rightcount,wrongcount,correctAnswer,yourAnswer)
+    else:
+        print("choose correct option")
 
 def subMix(level):
     if level == 1:
@@ -281,6 +92,29 @@ def subMix(level):
         a, b = b, a
     return a,b
 
+def subtracting(a,b,rightcount,wrongcount):
+    q = str(a)+" - "+str(b)+" = "
+    c = a-b
+    print(a,"-",b,"=",end="")
+    answer = int(input())
+    if answer == c:
+        rightcount+=1
+    else:
+        wrongcount+=1
+    return q,c,rightcount,wrongcount
+
+def mul(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
+    if level <= 4: 
+        for k in range(10):
+            print("Q",k+1,sep="",end=") ")
+            a,b = mulMix(level)
+            q, answer, rightcount, wrongcount = multipling(a,b,rightcount,wrongcount)
+            correctAnswer[q] = answer
+            yourAnswer[q] = answer
+        result(rightcount,wrongcount,correctAnswer,yourAnswer)
+    else:
+        print("choose correct option")
+
 def mulMix(level):
     if level == 1:
         a = r.randrange(15)
@@ -295,6 +129,28 @@ def mulMix(level):
         a = r.randrange(15,30)
         b = r.randrange(10,21)
     return a,b
+
+def multipling(a,b,rightcount,wrongcount):
+    q = str(a)+" * "+str(b)+" = "
+    c = a*b
+    print(a,"*",b,"=",end="")
+    answer = int(input())
+    if answer == c:
+        rightcount+=1
+    else:
+        wrongcount+=1
+    return q,c,rightcount,wrongcount
+
+def div(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
+    if level <= 4:
+        for k in range(10):
+            a,b = divMix(level)
+            q, answer, rightcount, wrongcount = multipling(a,b,rightcount,wrongcount)
+            correctAnswer[q] = answer
+            yourAnswer[q] = answer
+        result(rightcount,wrongcount,correctAnswer,yourAnswer)
+    else:
+        print("choose correct option")
 
 def divMix(level):
     if level == 1:
@@ -314,6 +170,66 @@ def divMix(level):
         b = r.randrange(14,25)
         a = b*r.randrange(1,21)
     return a,b
+
+def dividing(a,b,rightcount,wrongcount):
+    q = str(a)+" / "+str(b)+" = "
+    c = a/b
+    print(a,"/",b,"=",end="")
+    answer = int(input())
+    if answer == c:
+        rightcount+=1
+    else:
+        wrongcount+=1
+    return q,c,rightcount,wrongcount
+
+def table(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ):
+    if level <= 4: 
+        for k in range(10):
+            print("Q",k+1,sep="",end=") ")
+            if level == 1: #practice for table 2 to 10
+                a = r.randrange(2,11)
+                b = r.randrange(1,11)
+            elif level == 2: #practice for table 10 to 20
+                a = r.randrange(10,21)
+                b = r.randrange(1,11)
+            elif level == 3: #practice for table 18 to 25
+                a = r.randrange(18,26)
+                b = r.randrange(1,11)
+            elif level == 4: #pracitce for table 2 to 25
+                a = r.randrange(2,26)
+                b = r.randrange(1,11)               
+            q, answer, rightcount, wrongcount = multipling(a,b,rightcount,wrongcount)
+            correctAnswer[q] = answer
+            yourAnswer[q] = answer
+        result(rightcount,wrongcount,correctAnswer,yourAnswer)
+    else:
+        print("choose correct option")
+    
+def mix(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ):
+    li = ['+',"-","*","/"]
+    for k in range(10):
+        op = li[r.randrange(4)]
+        a,b = getNum(op,level)
+        print("Q",k+1,sep="",end=") ")
+
+        if op == '+':
+            q, answer, rightcount, wrongcount = adding(a, b, rightcount, wrongcount)
+            correctAnswer[q] = answer
+            
+        elif op == '-':
+            q, answer, rightcount, wrongcount = subtracting(a, b, rightcount, wrongcount)
+            correctAnswer[q] = answer
+        
+        elif op == '*':
+            q, answer, rightcount, wrongcount = multipling(a, b, rightcount, wrongcount)
+            correctAnswer[q] = answer
+            
+        elif op == '/':
+            q, answer, rightcount, wrongcount = dividing(a, b, rightcount, wrongcount)
+            correctAnswer[q] = answer
+        
+        yourAnswer[q] = answer
+    result(rightcount,wrongcount,correctAnswer,yourAnswer)
 
 def highScr(game,level):
     pass
@@ -343,23 +259,21 @@ def info():
 def showinfo():
     massage = "This progrmam is made by MOZAHIDUL ISLAM \nperpos of ths program is to make your calculation faster" 
     massage+=" regarding to school project\nHope you like it...\n                        Thankyou for using\n"
-    for j in range(len(massage)):
-        for i in massage[j]:
-            print(i,end="")
-            # t.sleep(0.057)
-
+    for i in massage:
+        # t.sleep(0.037)
+        print(i,end="")
 
 #************main programe
 showinfo()
 i = 1
 while i !=0:
     showoptn()
-    try :
-        game = int(input("Enter Game: "))
+    try:
+        game = int(input("Enter here: "))
         if game == 0:
             break
         level = int(input("Enter level: "))
-        
+
         if chkOptn(game,level) == True:
             if game == 1:
                 add(level)
@@ -377,7 +291,6 @@ while i !=0:
                 highScr(game,level)
         else:
             print("\nChoose correct option...")
-    except:
-        print('Only Integer')
-        
-info()   
+    except Exception:
+        print("Enter only integeral value")
+info()
