@@ -1,7 +1,7 @@
 import random as r
 import time as t
 
-def result(rightcount,wrongcount,correctAnswer,yourAnswer,score): 
+def result(rightcount,wrongcount,correctAnswer,yourAnswer,score): #it will simply print the result of your currect practiced game mode 
     print("your score =",score,"\nResult = ",rightcount,"/",10)  
     print(rightcount,"answers are right and ",wrongcount,"answers are wrong")
     print("Correct answer = ",correctAnswer,end="\n")
@@ -13,13 +13,13 @@ def result(rightcount,wrongcount,correctAnswer,yourAnswer,score):
     else:
         print("Poor performence...! You need to practice alot\nKeep practicing")
 
-def pointGen(rightcount, wrongcount, inetialTime, finalTime):
+def pointGen(rightcount, wrongcount, inetialTime, finalTime): #it will genrate point according to the number of right answers and time taken to solve questions
     timetaken = round(finalTime - inetialTime,2)
     print("Time:",timetaken)
     score = round((rightcount*11)-(timetaken))
     return score
 
-def getNum(op,level):
+def getNum(op,level): # it will return random numbers by giving the level and operator for the miscllaneous(mix function)
     if op == '+':
         return addMix(level)
     elif op == '-':
@@ -31,7 +31,7 @@ def getNum(op,level):
     else:
         print("unexpected error...!") 
 
-def add(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
+def add(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ):#in this function loop wil run for 10 times to ask question(add) and get answer from the user 
     if level <= 4:
         inetialTime = t.time()
         for k in range(10):
@@ -47,7 +47,7 @@ def add(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {
         print("choose correct option")
 
  
-def addMix(level):
+def addMix(level): #it will retrun 2 random numbers for addition by giving its level 
     if level == 1:
         a = r.randrange(20)
         b = r.randrange(15)
