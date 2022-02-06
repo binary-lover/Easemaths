@@ -1,25 +1,106 @@
 import random as r
 import time as t
+import mysql.connector
+mydb = mysql.connector.connect(host="localhost",user="root",passwd="lucky786",database ="mathsrock")
+mycursor = mydb.cursor()
 
-def result(rightcount,wrongcount,correctAnswer,yourAnswer,score): #it will simply print the result of your currect practiced game mode 
-    print("your score =",score,"\nResult = ",rightcount,"/",10)  
-    print(rightcount,"answers are right and ",wrongcount,"answers are wrong")
-    print("Correct answer = ",correctAnswer,end="\n")
-    print("Your Answers   = ",yourAnswer,end="\n")
-    if wrongcount == 0:
+def result(rightcount,level,qList,correctAnswer,yourAnswer,score,timetaken,game): 
+    print("\nyour score :",score," "*10,"Result = ",rightcount,"/",10)  
+    print("time taken :", timetaken,"sec","     Level :",level)
+    tempTable(qList,correctAnswer,yourAnswer)
+    crtTable()
+    chkHighScore(score,level,game) 
+    query = "select * from temp"
+    mycursor.execute(query)
+    print("\nQusetions        correct ans         your ans")
+    for i in mycursor:
+        for j in range(3):
+            x = len(str(i[j]))
+            print(i[j],end=" "*(20-x))
+        print()
+    print()
+    if rightcount == 10:
         print("well done...! All answers are correct...\nKeep practicing")        
     elif rightcount >=7:
         print("Good...! Work more to be batter\nKeep praciting")
     else:
         print("Poor performence...! You need to practice alot\nKeep practicing")
 
-def pointGen(rightcount, wrongcount, inetialTime, finalTime): #it will genrate point according to the number of right answers and time taken to solve questions
+def crtTable():
+    create = "create table highscore(game varchar(20), level int(3), score int(3),name varchar(30))"
+    try:
+        mycursor.execute(create)
+    except Exception as e:
+        print(e)
+
+def chkHighScore(score,level,game):
+    query = "select max(score) from highscore where level = {} and game = '{}'".format(level,game)
+    mycursor.execute(query)
+    for i in mycursor:
+        if i[0]==None:
+            name = getName(None)
+            insert(game,level,score,name)
+        elif i[0] < score:
+            name = getName(score)
+            alter(game,level,score,name)
+
+def highScore():
+    show = "select * from highscore"
+    try:
+        mycursor.execute(show)
+    except Exception:
+        print("\n****NO DATA FOUND*****\n")
+        return
+    print("\nGAME","LEVEL","SCORE"," NAME",sep=" "*(9))
+    for i in mycursor:
+        for j in range(4):
+            x = len(str(i[j]))
+            print(i[j],end=" "*(14-x))
+        print()
+    print()
+
+def pointGen(rightcount,  inetialTime, finalTime):
     timetaken = round(finalTime - inetialTime,2)
     print("Time:",timetaken)
     score = round((rightcount*11)-(timetaken))
-    return score
+    return score,timetaken
 
-def getNum(op,level): # it will return random numbers by giving the level and operator for the miscllaneous(mix function)
+def getName(mod):
+    if mod == None:
+        print("Congratulations..! you made a record.")
+    else:
+        print("Congratulations..!  you broke a record.")
+    names = input("Enter your Name: ")
+    return names
+
+def alter(game,level,score,name):
+    print(game,level,score,name)
+    query = "update highscore set score = {}, name = '{}' where level = {} and game = '{}'".format(score,name,level,game)
+    mycursor.execute(query)
+    mydb.commit()
+
+def insert(game,level,score,name): 
+    query = "insert into highscore(game,level,score,name) values('{}',{},{},'{}')".format(game,level,score,name)
+    mycursor.execute(query)
+    mydb.commit()
+
+def tempTable(qList, correctAnswer, yourAnswer):
+    delt = "drop table temp"
+    creat = "create table temp( Q_list varchar(20), Correct_Ans int(3), Your_Ans int(3));"
+    try: 
+        mycursor.execute(delt)
+    except Exception:
+        pass
+    finally:
+        mycursor.execute(creat)
+    i = 1
+    while i <= 10:
+        query = "insert into temp(Q_list, Correct_Ans, Your_Ans) values('{}',{},{})".format(str(i)+") "+qList[i-1],correctAnswer[i-1],yourAnswer[i-1])
+        mycursor.execute(query)
+        mydb.commit()
+        i+=1
+
+def getNum(op,level):
     if op == '+':
         return addMix(level)
     elif op == '-':
@@ -31,23 +112,25 @@ def getNum(op,level): # it will return random numbers by giving the level and op
     else:
         print("unexpected error...!") 
 
-def add(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ):#in this function loop wil run for 10 times to ask question(add) and get answer from the user 
+def add(level, rightcount = 0, wrongcount = 0 ):
+    game,correctAnswer,yourAnswer,qList = 'Addition',[],[],[]
+    qList =[]
     if level <= 4:
         inetialTime = t.time()
         for k in range(10):
             print("Q",k+1,sep="",end=") ")
-            a,b = addMix(level)           
-            q, answer, rightcount, wrongcount = adding(a,b,rightcount,wrongcount)
-            yourAnswer[q] = answer
-            correctAnswer[q] = answer
+            a,b = addMix(level)        
+            q, answer, rightcount, wrongcount, yourans = adding(a,b,rightcount,wrongcount)
+            qList.append(q)
+            yourAnswer.append(yourans)
+            correctAnswer.append(answer)
         finalTime = t.time()
-        score = pointGen(rightcount, wrongcount, inetialTime, finalTime)
-        result(rightcount,wrongcount,correctAnswer,yourAnswer,score)
+        score, timetaken = pointGen(rightcount, inetialTime, finalTime)
+        result(rightcount,level,qList,correctAnswer,yourAnswer,score,timetaken,game)
     else:
         print("choose correct option")
 
- 
-def addMix(level): #it will retrun 2 random numbers for addition by giving its level 
+def addMix(level):
     if level == 1:
         a = r.randrange(20)
         b = r.randrange(15)
@@ -63,7 +146,7 @@ def addMix(level): #it will retrun 2 random numbers for addition by giving its l
     return a,b
 
 def adding(a,b,rightcount,wrongcount):
-    q = str(a)+" + "+str(b)+" = "
+    q = str(a)+" + "+str(b)
     c = a+b
     print(a,"+",b,"=",end="")
     answer = int(input())
@@ -71,20 +154,22 @@ def adding(a,b,rightcount,wrongcount):
         rightcount+=1
     else:
         wrongcount+=1
-    return q,c,rightcount,wrongcount
+    return q,c,rightcount,wrongcount,answer
 
-def sub(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
+def sub(level, rightcount = 0, wrongcount = 0 ):
+    game,correctAnswer,yourAnswer,qList = 'Subtraction',[],[],[]
     if level <= 4:
         inetialTime = t.time()
         for k in range(10):
             print("Q",k+1,sep="",end=") ")
             a,b = subMix(level)
-            q, answer, rightcount, wrongcount = subtracting(a,b,rightcount,wrongcount)
-            correctAnswer[q] = answer
-            yourAnswer[q] = answer
+            q, answer, rightcount, wrongcount, yourans = subtracting(a,b,rightcount,wrongcount)
+            qList.append(q)
+            correctAnswer.append(answer)
+            yourAnswer.append(yourans)
         finalTime = t.time()
-        score = pointGen(rightcount, wrongcount, inetialTime, finalTime)
-        result(rightcount,wrongcount,correctAnswer,yourAnswer,score)
+        score, timetaken = pointGen(rightcount, inetialTime, finalTime)
+        result(rightcount,level,qList,correctAnswer,yourAnswer,score,timetaken,game)
     else:
         print("choose correct option")
 
@@ -106,7 +191,7 @@ def subMix(level):
     return a,b
 
 def subtracting(a,b,rightcount,wrongcount):
-    q = str(a)+" - "+str(b)+" = "
+    q = str(a)+" - "+str(b)
     c = a-b
     print(a,"-",b,"=",end="")
     answer = int(input())
@@ -114,20 +199,22 @@ def subtracting(a,b,rightcount,wrongcount):
         rightcount+=1
     else:
         wrongcount+=1
-    return q,c,rightcount,wrongcount
+    return q,c,rightcount,wrongcount,answer 
 
-def mul(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
+def mul(level, rightcount = 0, wrongcount = 0): 
+    game,correctAnswer,yourAnswer,qList = 'Multiplication',[],[],[]
     if level <= 4:
         inetialTime = t.time()
         for k in range(10):
             print("Q",k+1,sep="",end=") ")
             a,b = mulMix(level)
-            q, answer, rightcount, wrongcount = multipling(a,b,rightcount,wrongcount)
-            correctAnswer[q] = answer
-            yourAnswer[q] = answer
+            q, answer, rightcount, wrongcount, yourans = multipling(a,b,rightcount,wrongcount)
+            qList.append(q)
+            correctAnswer.append(answer)
+            yourAnswer.append(yourans)
         finalTime = t.time()
-        score = pointGen(rightcount, wrongcount, inetialTime, finalTime)
-        result(rightcount,wrongcount,correctAnswer,yourAnswer,score)
+        score, timetaken = pointGen(rightcount, inetialTime, finalTime)
+        result(rightcount,level,qList,correctAnswer,yourAnswer,score,timetaken,game)
     else:
         print("choose correct option")
 
@@ -147,7 +234,7 @@ def mulMix(level):
     return a,b
 
 def multipling(a,b,rightcount,wrongcount):
-    q = str(a)+" * "+str(b)+" = "
+    q = str(a)+" * "+str(b)
     c = a*b
     print(a,"*",b,"=",end="")
     answer = int(input())
@@ -155,20 +242,22 @@ def multipling(a,b,rightcount,wrongcount):
         rightcount+=1
     else:
         wrongcount+=1
-    return q,c,rightcount,wrongcount
+    return q,c,rightcount,wrongcount,answer 
 
-def div(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ): 
+def div(level, rightcount = 0, wrongcount = 0): 
+    game,correctAnswer,yourAnswer,qList = 'Division',[],[],[]
     if level <= 4:
         inetialTime = t.time()
         for k in range(10):
             print("Q",k+1,sep="",end=") ")
             a,b = divMix(level)
-            q, answer, rightcount, wrongcount = dividing(a,b,rightcount,wrongcount)
-            correctAnswer[q] = answer
-            yourAnswer[q] = answer
+            q, answer, rightcount, wrongcount, yourans = dividing(a,b,rightcount,wrongcount)
+            qList.append(q)
+            correctAnswer.append(answer)
+            yourAnswer.append(yourans)
         finalTime = t.time()
-        score = pointGen(rightcount, wrongcount, inetialTime, finalTime)
-        result(rightcount,wrongcount,correctAnswer,yourAnswer,score)
+        score, timetaken = pointGen(rightcount, inetialTime, finalTime)
+        result(rightcount,level,qList,correctAnswer,yourAnswer,score,timetaken,game)
     else:
         print("choose correct option")
 
@@ -192,7 +281,7 @@ def divMix(level):
     return a,b
 
 def dividing(a,b,rightcount,wrongcount):
-    q = str(a)+" / "+str(b)+" = "
+    q = str(a)+" / "+str(b)
     c = a/b
     print(a,"/",b,"=",end="")
     answer = int(input())
@@ -200,9 +289,10 @@ def dividing(a,b,rightcount,wrongcount):
         rightcount+=1
     else:
         wrongcount+=1
-    return q,c,rightcount,wrongcount
+    return q,int(c),rightcount,wrongcount,answer 
 
-def table(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ):
+def table(level, rightcount = 0, wrongcount = 0 ):
+    game,correctAnswer,yourAnswer,qList = 'Table',[],[],[]
     if level <= 4: 
         inetialTime = t.time()
         for k in range(10):
@@ -219,47 +309,42 @@ def table(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer =
             elif level == 4: #pracitce for table 2 to 25
                 a = r.randrange(2,26)
                 b = r.randrange(1,11)               
-            q, answer, rightcount, wrongcount = multipling(a,b,rightcount,wrongcount)
-            correctAnswer[q] = answer
-            yourAnswer[q] = answer
+            q, answer, rightcount, wrongcount, yourans = multipling(a,b,rightcount,wrongcount)
+            qList.append(q)
+            correctAnswer.append(answer)
+            yourAnswer.append(yourans)
         finalTime = t.time()
-        score = pointGen(rightcount, wrongcount, inetialTime, finalTime)      
-        result(rightcount,wrongcount,correctAnswer,yourAnswer,score)
+        score, timetaken = pointGen(rightcount, inetialTime, finalTime)      
+        result(rightcount,level,qList,correctAnswer,yourAnswer,score,timetaken,game)
     else:
         print("choose correct option")
     
-def mix(level, rightcount = 0, wrongcount = 0,correctAnswer = {}, yourAnswer = {} ):
-    li = ['+',"-","*","/"]
-    
+def mix(level, rightcount = 0, wrongcount = 0,correctAnswer = [], yourAnswer = [] ):
+    game = 'Miscllaneous'
+    li = ['+',"-","*","/"]   
     inetialTime = t.time()
+    qList =[]
     for k in range(10):
         op = li[r.randrange(4)]
         a,b = getNum(op,level)
         print("Q",k+1,sep="",end=") ")
-
         if op == '+':
-            q, answer, rightcount, wrongcount = adding(a, b, rightcount, wrongcount)
-            correctAnswer[q] = answer
+            q, answer, rightcount, wrongcount, yourans = adding(a, b, rightcount, wrongcount)
             
         elif op == '-':
-            q, answer, rightcount, wrongcount = subtracting(a, b, rightcount, wrongcount)
-            correctAnswer[q] = answer
+            q, answer, rightcount, wrongcount, yourans = subtracting(a, b, rightcount, wrongcount)
         
         elif op == '*':
-            q, answer, rightcount, wrongcount = multipling(a, b, rightcount, wrongcount)
-            correctAnswer[q] = answer
+            q, answer, rightcount, wrongcount, yourans = multipling(a, b, rightcount, wrongcount)
             
         elif op == '/':
-            q, answer, rightcount, wrongcount = dividing(a, b, rightcount, wrongcount)
-            correctAnswer[q] = answer
-        
-        yourAnswer[q] = answer
+            q, answer, rightcount, wrongcount, yourans = dividing(a, b, rightcount, wrongcount)
+            qList.append(q)
+        correctAnswer.append(answer)
+        yourAnswer.append(yourans)
     finalTime = t.time()
-    score = pointGen(rightcount, wrongcount, inetialTime, finalTime)
-    result(rightcount,wrongcount,correctAnswer,yourAnswer,score)
-
-def highScr(game,level):
-    pass
+    score, timetaken = pointGen(rightcount, inetialTime, finalTime)
+    result(rightcount,level,qList,correctAnswer,yourAnswer,score,timetaken,game)
 
 def showoptn():
     print("Choose any option from the following to practice on it.\n")
@@ -269,7 +354,7 @@ def showoptn():
     print("press 0 to Exit the programe...")
 
 def chkOptn(game,level):
-    if game<=6 and game >=0 and level <=4 and level >0:
+    if game<=7 and game >=0 and level <=4 and level >0:
         return True
     else: 
         return False
@@ -287,11 +372,11 @@ def showinfo():
     massage = "This progrmam is made by MOZAHIDUL ISLAM \nperpos of ths program is to make your calculation faster" 
     massage+=" regarding to school project\nHope you like it...\n                        Thankyou for using\n"
     for i in massage:
-        # t.sleep(0.037)
+        t.sleep(0.037)
         print(i,end="")
 
-#************main programe
 showinfo()
+#************main programe
 i = 1
 while i !=0:
     showoptn()
@@ -299,8 +384,10 @@ while i !=0:
         game = int(input("Enter here: "))
         if game == 0:
             break
+        if game == 7:
+            highScore()
+            continue
         level = int(input("Enter level: "))
-
         if chkOptn(game,level) == True:
             if game == 1:
                 add(level)
@@ -314,10 +401,8 @@ while i !=0:
                 mix(level)
             elif game == 6:
                 table(level)
-            elif game == 7:
-                highScr(game,level)
         else:
             print("\nChoose correct option...")
-    except Exception:
-        print("Enter only integeral value")
+    except Exception as e:
+        print(e)
 info()   
