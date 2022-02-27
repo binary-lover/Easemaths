@@ -1,1 +1,1 @@
-# Maths-rock
+# EaseMaths
