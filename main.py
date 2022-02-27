@@ -8,7 +8,6 @@ def result(rightcount,level,qList,correctAnswer,yourAnswer,score,timetaken,game)
     print("\nyour score :",score," "*10,"Result = ",rightcount,"/",10)  
     print("time taken :", timetaken,"sec","     Level :",level)
     tempTable(qList,correctAnswer,yourAnswer)
-    crtTable()
     chkHighScore(score,level,game) 
     query = "select * from temp"
     mycursor.execute(query)
@@ -30,32 +29,35 @@ def crtTable():
     create = "create table highscore(game varchar(20), level int(3), score int(3),name varchar(30))"
     try:
         mycursor.execute(create)
-    except Exception as e:
-        print(e)
-
+    except:
+        pass
+    
 def chkHighScore(score,level,game):
+    crtTable()
     query = "select max(score) from highscore where level = {} and game = '{}'".format(level,game)
     mycursor.execute(query)
     for i in mycursor:
-        if i[0]==None:
-            name = getName(None)
-            insert(game,level,score,name)
-        elif i[0] < score:
-            name = getName(score)
-            alter(game,level,score,name)
+        if score >0:
+            if i[0]==None:
+                name = getName(None)
+                insert(game,level,score,name)
+            elif i[0] < score:
+                name = getName(score)
+                update(game,level,score,name)
 
 def highScore():
-    show = "select * from highscore"
+    show = '''select * from highscore order by game not like 'addition',game not like 'subtraction',
+    game not like 'multiplication',game not like 'division',game not like 'miscllaneous',game not like 'Table',level;'''
     try:
         mycursor.execute(show)
-    except Exception:
+    except:
         print("\n****NO DATA FOUND*****\n")
         return
-    print("\nGAME","LEVEL","SCORE"," NAME",sep=" "*(9))
+    print("\nGAME","LEVEL","SCORE"," NAME",sep=" "*(13))
     for i in mycursor:
         for j in range(4):
             x = len(str(i[j]))
-            print(i[j],end=" "*(14-x))
+            print(i[j],end=" "*(18-x))
         print()
     print()
 
@@ -73,8 +75,7 @@ def getName(mod):
     names = input("Enter your Name: ")
     return names
 
-def alter(game,level,score,name):
-    print(game,level,score,name)
+def update(game,level,score,name):
     query = "update highscore set score = {}, name = '{}' where level = {} and game = '{}'".format(score,name,level,game)
     mycursor.execute(query)
     mydb.commit()
@@ -322,8 +323,8 @@ def table(level, rightcount = 0, wrongcount = 0 ):
 def mix(level, rightcount = 0, wrongcount = 0,correctAnswer = [], yourAnswer = [] ):
     game = 'Miscllaneous'
     li = ['+',"-","*","/"]   
-    inetialTime = t.time()
     qList =[]
+    inetialTime = t.time()
     for k in range(10):
         op = li[r.randrange(4)]
         a,b = getNum(op,level)
@@ -339,19 +340,26 @@ def mix(level, rightcount = 0, wrongcount = 0,correctAnswer = [], yourAnswer = [
             
         elif op == '/':
             q, answer, rightcount, wrongcount, yourans = dividing(a, b, rightcount, wrongcount)
-            qList.append(q)
+        qList.append(q)
         correctAnswer.append(answer)
         yourAnswer.append(yourans)
     finalTime = t.time()
     score, timetaken = pointGen(rightcount, inetialTime, finalTime)
     result(rightcount,level,qList,correctAnswer,yourAnswer,score,timetaken,game)
 
+def selLvl(game):
+    if game == 6:        
+        level = int(input("Enter level\n2 to 10 press    1\n10 to 20  press  2\n18 to 25 press   3\n2 to 25 press    4\n---------> "))
+    else:
+        level = int(input("Enter level\nEasy       1\nNormal     2\nHard       3\nVery Hard  4\n---------> "))
+    return level
+
 def showoptn():
-    print("Choose any option from the following to practice on it.\n")
-    print("1) For addition press 1\n2) For subtraction press 2\n3) For multiplication press 3")
-    print("4) For division press 4\n5) For miscllaneous press 5\n6) For table press 6 ")
-    print("7) To chech highscor press 7 ")
-    print("press 0 to Exit the programe...")
+    print("\nChoose any option from the following to practice on")
+    print("1 Addition \n2 Subtraction \n3 Multiplication")
+    print("4 Division \n5 Miscllaneous\n6 Table")
+    print("7 Highscor")
+    print("\npress 0 to Exit the programe...")
 
 def chkOptn(game,level):
     if game<=7 and game >=0 and level <=4 and level >0:
@@ -387,7 +395,7 @@ while i !=0:
         if game == 7:
             highScore()
             continue
-        level = int(input("Enter level: "))
+        level = selLvl(game)
         if chkOptn(game,level) == True:
             if game == 1:
                 add(level)
@@ -405,4 +413,4 @@ while i !=0:
             print("\nChoose correct option...")
     except Exception as e:
         print(e)
-info()   
+info()
