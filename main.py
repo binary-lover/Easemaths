@@ -320,7 +320,11 @@ def table(level, rightcount = 0, wrongcount = 0 ):
     else:
         print("choose correct option")
     
-def mix(level, rightcount = 0, wrongcount = 0,correctAnswer = [], yourAnswer = [] ):
+def mix(level, rightcount = 0, wrongcount = 0,correctAnswer = None, yourAnswer = None ):
+    if correctAnswer is None:
+        correctAnswer = []
+    if yourAnswer is None:
+        yourAnswer = []
     game = 'Miscllaneous'
     li = ['+',"-","*","/"]   
     qList =[]
