@@ -38,7 +38,7 @@ def chkHighScore(score,level,game):
     mycursor.execute(query)
     for i in mycursor:
         if score >0:
-            if i[0]==None:
+            if i[0] is None:
                 name = getName(None)
                 insert(game,level,score,name)
             elif i[0] < score:
@@ -68,7 +68,7 @@ def pointGen(rightcount,  inetialTime, finalTime):
     return score,timetaken
 
 def getName(mod):
-    if mod == None:
+    if mod is None:
         print("Congratulations..! you made a record.")
     else:
         print("Congratulations..!  you broke a record.")
@@ -396,7 +396,7 @@ while i !=0:
             highScore()
             continue
         level = selLvl(game)
-        if chkOptn(game,level) == True:
+        if chkOptn(game,level) is True:
             if game == 1:
                 add(level)
             elif game == 2:
