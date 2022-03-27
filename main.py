@@ -362,10 +362,7 @@ def showoptn():
     print("\npress 0 to Exit the programe...")
 
 def chkOptn(game,level):
-    if game<=7 and game >=0 and level <=4 and level >0:
-        return True
-    else: 
-        return False
+    return bool(game<=7 and game >=0 and level <=4 and level >0)
 
 def info():
     print("********************************************************")
