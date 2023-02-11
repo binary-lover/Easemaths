@@ -4,6 +4,9 @@ import mysql.connector
 mydb = mysql.connector.connect(host="localhost",user="root",passwd="lucky786",database ="mathsrock")
 mycursor = mydb.cursor()
 
+#lucky ansari is the best
+# and we all know about this
+#so i request you al to come in my party and  enjoy it fully
 
 def result(rightcount,level,qList,correctAnswer,yourAnswer,score,timetaken,game): 
     chkHighScore(score,level,game) 
