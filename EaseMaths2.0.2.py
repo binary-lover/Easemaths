@@ -12,7 +12,7 @@ def began():
     crtTempTable()
     
 
-# 1) creatind database automatic and not by privious virsions
+# 1) creats database automatic unlike privious virsions
 # 2) short the program
 # 3) seprate fucntion for start program "began()"
 # 4) performece improvment
