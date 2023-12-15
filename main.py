@@ -320,7 +320,11 @@ def table(level, rightcount = 0, wrongcount = 0 ):
     else:
         print("choose correct option")
     
-def mix(level, rightcount = 0, wrongcount = 0,correctAnswer = [], yourAnswer = [] ):
+def mix(level, rightcount = 0, wrongcount = 0,correctAnswer = None, yourAnswer = None ):
+    if correctAnswer is None:
+        correctAnswer = []
+    if yourAnswer is None:
+        yourAnswer = []
     game = 'Miscllaneous'
     li = ['+',"-","*","/"]   
     qList =[]
@@ -362,10 +366,7 @@ def showoptn():
     print("\npress 0 to Exit the programe...")
 
 def chkOptn(game,level):
-    if game<=7 and game >=0 and level <=4 and level >0:
-        return True
-    else: 
-        return False
+    return bool(game<=7 and game >=0 and level <=4 and level >0)
 
 def info():
     print("********************************************************")
